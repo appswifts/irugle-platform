@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getCountryBySlug } from "@/config/countries";
 import { prisma } from "@/lib/prisma";
+import { HotelMap } from "@/components/map/hotel-map";
 
 export default async function HotelDetailPage(
   props: { params: Promise<{ country: string; slug: string }> }
@@ -92,6 +93,8 @@ export default async function HotelDetailPage(
             </div>
           </div>
         )}
+
+        <HotelMap lat={hotel.lat} lng={hotel.lng} name={hotel.name} />
 
         <div className="mt-12 rounded-xl border bg-card p-6">
           <h2 className="text-xl font-semibold">Contact Info</h2>

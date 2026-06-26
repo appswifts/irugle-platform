@@ -20,6 +20,9 @@ export default async function CountryLayout(
               Irugle <span className="text-muted-foreground">{config.flag}</span>
             </Link>
             <nav className="hidden gap-6 text-sm font-medium md:flex">
+              <Link href={`/${country}/map`} className="text-muted-foreground hover:text-primary">
+                Map
+              </Link>
               <Link href={`/${country}/hotels`} className="text-muted-foreground hover:text-primary">
                 Hotels
               </Link>

@@ -7,7 +7,7 @@ export default async function DashboardPage() {
   const session = await auth();
   if (!session?.user) redirect("/auth/signin");
 
-  const userId = (session.user as any).id;
+  const userId = session.user.id;
   const provider = await prisma.provider.findUnique({ where: { userId } });
 
   if (!provider) {

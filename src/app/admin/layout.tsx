@@ -12,7 +12,7 @@ const navItems = [
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const session = await auth();
   if (!session?.user) redirect("/auth/signin");
-  if ((session.user as any).role !== "ADMIN") redirect("/");
+  if (session.user.role !== "ADMIN") redirect("/");
 
   return (
     <div className="flex min-h-screen">

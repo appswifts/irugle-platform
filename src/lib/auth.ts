@@ -1,23 +1,66 @@
 import NextAuth from "next-auth";
 import GitHub from "next-auth/providers/github";
 import Google from "next-auth/providers/google";
+import Credentials from "next-auth/providers/credentials";
+import bcrypt from "bcryptjs";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { prisma } from "@/lib/prisma";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(prisma),
+  session: { strategy: "jwt" },
   providers: [
-    GitHub({ clientId: process.env.AUTH_GITHUB_ID!, clientSecret: process.env.AUTH_GITHUB_SECRET! }),
-    Google({ clientId: process.env.AUTH_GOOGLE_ID!, clientSecret: process.env.AUTH_GOOGLE_SECRET! }),
+    GitHub({
+      clientId: process.env.AUTH_GITHUB_ID || "",
+      clientSecret: process.env.AUTH_GITHUB_SECRET || "",
+    }),
+    Google({
+      clientId: process.env.AUTH_GOOGLE_ID || "",
+      clientSecret: process.env.AUTH_GOOGLE_SECRET || "",
+    }),
+    Credentials({
+      name: "credentials",
+      credentials: {
+        email: { label: "Email", type: "email" },
+        password: { label: "Password", type: "password" },
+      },
+      async authorize(credentials) {
+        if (!credentials?.email || !credentials?.password) return null;
+
+        const email = credentials.email as string;
+        const password = credentials.password as string;
+
+        const user = await prisma.user.findUnique({ where: { email } });
+        if (!user || !user.hashedPassword) return null;
+
+        const isValid = await bcrypt.compare(password, user.hashedPassword);
+        if (!isValid) return null;
+
+        return {
+          id: user.id,
+          email: user.email,
+          name: user.name,
+          image: user.image,
+          role: user.role,
+        };
+      },
+    }),
   ],
   pages: {
     signIn: "/auth/signin",
   },
   callbacks: {
-    async session({ session, user }) {
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id;
+        token.role = (user as any).role;
+      }
+      return token;
+    },
+    async session({ session, token }) {
       if (session.user) {
-        (session.user as any).id = user.id;
-        (session.user as any).role = (user as any).role;
+        session.user.id = token.id as string;
+        session.user.role = token.role as string;
       }
       return session;
     },

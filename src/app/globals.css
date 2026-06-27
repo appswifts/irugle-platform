@@ -2,6 +2,7 @@
 @plugin "@tailwindcss/typography";
 
 @theme inline {
+  --font-sans: var(--font-work-sans), ui-sans-serif, system-ui, sans-serif;
   --color-primary: #0016af;
   --color-primary-container: #0022ee;
   --color-primary-fixed-dim: #bdc2ff;

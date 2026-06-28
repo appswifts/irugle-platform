@@ -19,11 +19,11 @@ export default function SignInPage() {
         <form action={formAction} className="bg-white rounded-xl border p-6 space-y-4">
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-            <input id="email" name="email" type="email" required className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" />
+            <input id="email" name="email" type="email" autoComplete="email" required className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" />
           </div>
           <div>
             <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">Password</label>
-            <input id="password" name="password" type="password" required className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" />
+            <input id="password" name="password" type="password" autoComplete="current-password" required className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" />
           </div>
 
           {state?.error && <p className="text-sm text-red-600">{state.error}</p>}

@@ -1,11 +1,19 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useEffect, useRef } from "react";
 import { signInWithCredentials, signInWithGithub, signInWithGoogle } from "./actions";
 import Link from "next/link";
 
 export default function SignInPage() {
   const [state, formAction, pending] = useActionState(signInWithCredentials, undefined);
+  const redirected = useRef(false);
+
+  useEffect(() => {
+    if (state && 'ok' in state && state.ok && state.url && !redirected.current) {
+      redirected.current = true;
+      window.location.href = state.url;
+    }
+  }, [state]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
@@ -26,7 +34,8 @@ export default function SignInPage() {
             <input id="password" name="password" type="password" autoComplete="current-password" required className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" />
           </div>
 
-          {state?.error && <p className="text-sm text-red-600">{state.error}</p>}
+          {state && 'error' in state && <p className="text-sm text-red-600">{state.error}</p>}
+          {state && 'ok' in state && state.ok && <p className="text-sm text-green-600">Signed in! Redirecting...</p>}
 
           <button disabled={pending} className="w-full bg-primary text-white rounded-lg px-4 py-2.5 text-sm font-medium hover:opacity-90 disabled:opacity-50 transition-opacity">
             {pending ? "Signing in..." : "Sign in"}

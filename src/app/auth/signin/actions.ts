@@ -3,20 +3,15 @@
 import { signIn } from "@/lib/auth";
 
 export async function signInWithCredentials(_prev: { error?: string } | undefined, formData: FormData) {
-  try {
-    await signIn("credentials", {
-      email: formData.get("email") as string,
-      password: formData.get("password") as string,
-      redirectTo: "/",
-    });
-    return { success: true };
-  } catch (e: any) {
-    if (e?.message?.includes("CredentialsSignin") || e?.type === "CredentialsSignin") {
-      return { error: "Invalid email or password" };
-    }
-    if (e?.message?.includes("NEXT_REDIRECT")) throw e;
-    return { error: JSON.stringify({ message: e?.message, type: e?.type, digest: e?.digest, cause: e?.cause?.message }, null, 2) };
+  const result = await signIn("credentials", {
+    email: formData.get("email") as string,
+    password: formData.get("password") as string,
+    redirect: false,
+  });
+  if (result?.error) {
+    return { error: `Sign-in error: ${result.error}` };
   }
+  return { ok: true, url: result?.url };
 }
 
 export async function signInWithGithub() {

@@ -2,7 +2,6 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getCountryBySlug } from "@/config/countries";
 import { prisma } from "@/lib/prisma";
-import { formatCurrency } from "@/lib/utils";
 
 export default async function HotelsPage(
   props: {
@@ -40,25 +39,25 @@ export default async function HotelsPage(
   });
 
   return (
-    <main className="mx-auto max-w-7xl px-4 py-8">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold">Hotels in {config.name}</h1>
-        <p className="mt-2 text-muted-foreground">{providers.length} properties found</p>
+    <main className="mx-auto max-w-[1280px] px-4 py-12">
+      <div className="mb-10">
+        <h1 className="text-3xl font-bold text-ink-blue tracking-tight">Hotels in {config.name}</h1>
+        <p className="mt-2 text-on-surface-variant">{providers.length} {providers.length === 1 ? "property" : "properties"} found</p>
       </div>
 
       <div className="grid gap-8 lg:grid-cols-[280px_1fr]">
         <aside className="hidden lg:block">
-          <div className="rounded-xl border bg-card p-5">
-            <h3 className="mb-4 font-semibold">Filters</h3>
+          <div className="rounded-2xl border border-natural-clay bg-white p-6">
+            <h3 className="mb-5 font-bold text-ink-blue text-sm uppercase tracking-wider">Filters</h3>
             <div className="space-y-4">
               <div>
-                <label className="text-sm font-medium">Property Type</label>
-                <div className="mt-2 space-y-2">
+                <label className="text-sm font-semibold text-ink-blue">Property Type</label>
+                <div className="mt-3 space-y-2">
                   {providerTypes.map((t) => (
                     <Link
                       key={t.type}
                       href={`/${country}/hotels?type=${t.type}`}
-                      className="block text-sm text-muted-foreground hover:text-primary"
+                      className="block text-sm text-on-surface-variant hover:text-primary transition-colors capitalize"
                     >
                       {t.type.replace(/_/g, " ").toLowerCase()}
                     </Link>
@@ -69,13 +68,13 @@ export default async function HotelsPage(
           </div>
         </aside>
 
-        <div className="space-y-4">
+        <div className="space-y-6">
           {providers.length === 0 ? (
-            <div className="rounded-xl border bg-card p-12 text-center">
-              <p className="text-muted-foreground">No hotels found in this area.</p>
+            <div className="rounded-2xl border border-natural-clay bg-surface-container-low p-16 text-center">
+              <p className="text-on-surface-variant">No hotels found in this area.</p>
               <Link
                 href="/providers/register"
-                className="mt-4 inline-block rounded-lg bg-primary px-4 py-2 text-sm text-primary-foreground"
+                className="mt-5 inline-block bg-primary text-white px-6 py-3 rounded-xl font-semibold text-sm hover:opacity-90 transition-all"
               >
                 List Your Property
               </Link>
@@ -85,28 +84,30 @@ export default async function HotelsPage(
               <Link
                 key={p.id}
                 href={`/${country}/hotels/${p.slug}`}
-                className="flex flex-col gap-4 rounded-xl border bg-card p-4 transition-all hover:shadow-md sm:flex-row"
+                className="flex flex-col gap-4 rounded-2xl border border-natural-clay bg-white p-5 transition-all hover:shadow-md sm:flex-row"
               >
-                <div className="h-32 w-full rounded-lg bg-muted sm:w-48" />
-                <div className="flex-1">
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <h3 className="font-semibold">{p.name}</h3>
-                      <p className="text-sm text-muted-foreground">
-                        {p.city?.name} · {p.type?.replace(/_/g, " ").toLowerCase()}
-                      </p>
+                <div className="h-40 w-full rounded-xl bg-surface-container-high sm:w-56 shrink-0" />
+                <div className="flex-1 flex flex-col justify-between">
+                  <div>
+                    <div className="flex items-start justify-between gap-4">
+                      <div>
+                        <h3 className="text-xl font-bold text-ink-blue">{p.name}</h3>
+                        <p className="text-sm text-on-surface-variant mt-0.5">
+                          {p.city?.name}{p.city?.name ? " · " : ""}{p.type?.replace(/_/g, " ").toLowerCase()}
+                        </p>
+                      </div>
+                      {p.starRating && (
+                        <span className="text-sm text-on-surface-variant shrink-0">★ {p.starRating}</span>
+                      )}
                     </div>
-                    {p.starRating && (
-                      <span className="text-sm text-muted-foreground">★ {p.starRating}</span>
-                    )}
+                    <p className="mt-3 line-clamp-2 text-sm text-on-surface-variant leading-relaxed">
+                      {p.description || "No description available."}
+                    </p>
                   </div>
-                  <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">
-                    {p.description || "No description available."}
-                  </p>
                   {p.amenities.length > 0 && (
-                    <div className="mt-3 flex flex-wrap gap-2">
+                    <div className="mt-4 flex flex-wrap gap-2">
                       {p.amenities.slice(0, 4).map((a) => (
-                        <span key={a} className="rounded-full bg-muted px-2 py-0.5 text-xs">
+                        <span key={a} className="rounded-full bg-surface-container-high text-on-surface-variant px-3 py-1 text-xs font-medium">
                           {a}
                         </span>
                       ))}

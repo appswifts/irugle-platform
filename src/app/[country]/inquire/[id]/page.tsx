@@ -19,7 +19,7 @@ export default async function InquirePage(
   return (
     <main className="mx-auto max-w-lg px-4 py-12">
       <h1 className="text-2xl font-bold">Inquire at {provider.name}</h1>
-      <p className="mt-1 text-sm text-muted-foreground">
+      <p className="mt-1 text-sm text-on-surface-variant">
         Your inquiry will be sent directly to {provider.name}. They&apos;ll respond to confirm availability.
       </p>
 
@@ -38,7 +38,7 @@ export default async function InquirePage(
             id="guestName"
             name="guestName"
             required
-            className="mt-1 w-full rounded-lg border px-4 py-2.5 text-sm"
+            className="mt-1 w-full rounded-lg border border-natural-clay px-4 py-2.5 text-sm"
           />
         </div>
 
@@ -51,7 +51,7 @@ export default async function InquirePage(
             name="guestEmail"
             type="email"
             required
-            className="mt-1 w-full rounded-lg border px-4 py-2.5 text-sm"
+            className="mt-1 w-full rounded-lg border border-natural-clay px-4 py-2.5 text-sm"
           />
         </div>
 
@@ -62,7 +62,7 @@ export default async function InquirePage(
           <input
             id="guestPhone"
             name="guestPhone"
-            className="mt-1 w-full rounded-lg border px-4 py-2.5 text-sm"
+            className="mt-1 w-full rounded-lg border border-natural-clay px-4 py-2.5 text-sm"
           />
         </div>
 
@@ -75,7 +75,7 @@ export default async function InquirePage(
               id="checkIn"
               name="checkIn"
               type="date"
-              className="mt-1 w-full rounded-lg border px-4 py-2.5 text-sm"
+              className="mt-1 w-full rounded-lg border border-natural-clay px-4 py-2.5 text-sm"
             />
           </div>
           <div>
@@ -86,7 +86,7 @@ export default async function InquirePage(
               id="checkOut"
               name="checkOut"
               type="date"
-              className="mt-1 w-full rounded-lg border px-4 py-2.5 text-sm"
+              className="mt-1 w-full rounded-lg border border-natural-clay px-4 py-2.5 text-sm"
             />
           </div>
         </div>
@@ -99,7 +99,7 @@ export default async function InquirePage(
             id="guests"
             name="guests"
             defaultValue={1}
-            className="mt-1 w-full rounded-lg border px-4 py-2.5 text-sm"
+            className="mt-1 w-full rounded-lg border border-natural-clay px-4 py-2.5 text-sm"
           >
             {[1,2,3,4,5,6,7,8,9,10].map((n) => (
               <option key={n} value={n}>{n}</option>
@@ -116,13 +116,13 @@ export default async function InquirePage(
             name="notes"
             rows={3}
             placeholder="Any special requests or questions..."
-            className="mt-1 w-full rounded-lg border px-4 py-2.5 text-sm"
+            className="mt-1 w-full rounded-lg border border-natural-clay px-4 py-2.5 text-sm"
           />
         </div>
 
         <button
           type="submit"
-          className="w-full rounded-lg bg-primary px-6 py-3 font-medium text-primary-foreground hover:opacity-90"
+          className="w-full rounded-lg bg-primary px-6 py-3 font-medium text-white hover:opacity-90"
         >
           Send Inquiry
         </button>

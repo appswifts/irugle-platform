@@ -14,12 +14,12 @@ export default async function DashboardPage() {
     return (
       <main className="mx-auto max-w-lg px-4 py-12 text-center">
         <h1 className="text-2xl font-bold">Dashboard</h1>
-        <p className="mt-4 text-muted-foreground">
+        <p className="mt-4 text-on-surface-variant">
           You don&apos;t have a property listed yet.
         </p>
         <Link
           href="/providers/register"
-          className="mt-6 inline-block rounded-lg bg-primary px-6 py-3 font-medium text-primary-foreground hover:opacity-90"
+          className="mt-6 inline-block rounded-lg bg-primary px-6 py-3 font-medium text-white hover:opacity-90"
         >
           List Your Property
         </Link>
@@ -38,13 +38,13 @@ export default async function DashboardPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold">{provider.name}</h1>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-on-surface-variant">
             Status: {provider.status.toLowerCase()}
           </p>
         </div>
         <Link
           href="/dashboard/listings"
-          className="rounded-lg border px-4 py-2 text-sm hover:bg-muted"
+          className="rounded-lg border border-natural-clay px-4 py-2 text-sm hover:bg-surface-container-high"
         >
           Manage Listings
         </Link>
@@ -53,20 +53,20 @@ export default async function DashboardPage() {
       <section className="mt-10">
         <h2 className="text-lg font-semibold">Recent Inquiries ({bookings.length})</h2>
         {bookings.length === 0 ? (
-          <p className="mt-4 text-muted-foreground">No inquiries yet.</p>
+          <p className="mt-4 text-on-surface-variant">No inquiries yet.</p>
         ) : (
           <div className="mt-4 space-y-3">
             {bookings.map((b) => (
-              <div key={b.id} className="rounded-xl border bg-card p-4">
+              <div key={b.id} className="rounded-xl border border-natural-clay bg-white p-4">
                 <div className="flex items-start justify-between">
                   <div>
                     <h3 className="font-medium">{b.guestName}</h3>
-                    <p className="text-sm text-muted-foreground">{b.guestEmail}</p>
+                    <p className="text-sm text-on-surface-variant">{b.guestEmail}</p>
                     {b.guestPhone && (
-                      <p className="text-sm text-muted-foreground">{b.guestPhone}</p>
+                      <p className="text-sm text-on-surface-variant">{b.guestPhone}</p>
                     )}
                   </div>
-                  <span className="rounded-full bg-muted px-2 py-0.5 text-xs capitalize">
+                  <span className="rounded-full bg-surface-container-high px-2 py-0.5 text-xs capitalize">
                     {b.status.toLowerCase()}
                   </span>
                 </div>
@@ -77,7 +77,7 @@ export default async function DashboardPage() {
                   </p>
                 )}
                 {b.notes && (
-                  <p className="mt-2 text-sm text-muted-foreground">&ldquo;{b.notes}&rdquo;</p>
+                  <p className="mt-2 text-sm text-on-surface-variant">&ldquo;{b.notes}&rdquo;</p>
                 )}
               </div>
             ))}

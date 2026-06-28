@@ -31,11 +31,11 @@ export default async function MapPage(
       <div className="mb-6 flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold">Map of {config.name}</h1>
-          <p className="mt-1 text-muted-foreground">{markers.length} properties on the map</p>
+          <p className="mt-1 text-on-surface-variant">{markers.length} properties on the map</p>
         </div>
         <Link
           href={`/${country}/hotels`}
-          className="rounded-lg border px-4 py-2 text-sm hover:bg-muted"
+          className="rounded-lg border border-natural-clay px-4 py-2 text-sm hover:bg-surface-container-high"
         >
           List View
         </Link>

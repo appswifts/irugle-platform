@@ -4,7 +4,7 @@ import dynamic from "next/dynamic";
 
 const MapViewDynamic = dynamic(
   () => import("@/components/map/map-view").then((mod) => ({ default: mod.MapView })),
-  { ssr: false, loading: () => <div className="h-[300px] rounded-xl border bg-muted animate-pulse" /> }
+  { ssr: false, loading: () => <div className="h-[300px] rounded-xl border border-natural-clay bg-surface-container-high animate-pulse" /> }
 );
 
 interface HotelMapProps {

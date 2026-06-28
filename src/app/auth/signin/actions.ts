@@ -9,13 +9,13 @@ export async function signInWithCredentials(_prev: { error?: string } | undefine
       password: formData.get("password") as string,
       redirectTo: "/",
     });
+    return { success: true };
   } catch (e: any) {
-    console.error("[signin] Auth error:", e?.message, e?.type, e?.code, e?.cause);
     if (e?.message?.includes("CredentialsSignin") || e?.type === "CredentialsSignin") {
       return { error: "Invalid email or password" };
     }
     if (e?.message?.includes("NEXT_REDIRECT")) throw e;
-    return { error: `Auth error: ${e?.message || "unknown"}` };
+    return { error: JSON.stringify({ message: e?.message, type: e?.type, digest: e?.digest, cause: e?.cause?.message }, null, 2) };
   }
 }
 

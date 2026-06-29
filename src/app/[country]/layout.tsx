@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getCountryBySlug } from "@/config/countries";
+import { UserMenu } from "@/components/user-menu";
 
 export default async function CountryLayout(
   props: { children: React.ReactNode; params: Promise<{ country: string }> }
@@ -41,6 +42,7 @@ export default async function CountryLayout(
             >
               List Your Property
             </Link>
+            <UserMenu />
           </div>
         </div>
       </header>

@@ -13,3 +13,22 @@ export async function toggleProductStatus(formData: FormData) {
   });
   revalidatePath("/admin/listings");
 }
+
+export async function createAdminListing(formData: FormData) {
+  const providerId = formData.get("providerId") as string;
+  const name = formData.get("name") as string;
+  const type = formData.get("type") as string;
+  const price = parseFloat(formData.get("price") as string);
+
+  await prisma.product.create({
+    data: {
+      providerId,
+      type: type as any,
+      name,
+      price,
+      isActive: true,
+    },
+  });
+
+  revalidatePath("/admin/listings");
+}

@@ -1,19 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { signIn, useSession } from "next-auth/react";
+import { useState, useCallback } from "react";
 import Link from "next/link";
 
 export default function SignInPage() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const { data: session } = useSession();
 
-  useEffect(() => {
-    if (session) window.location.href = "/";
-  }, [session]);
-
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  const handleSubmit = useCallback(async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
@@ -23,23 +17,37 @@ export default function SignInPage() {
     const password = data.get("password") as string;
 
     try {
-      const result = await signIn("credentials", {
-        email,
-        password,
-        redirect: false,
+      // Step 1: Get CSRF token
+      const csrfRes = await fetch("/api/auth/csrf");
+      const { csrfToken } = await csrfRes.json();
+
+      // Step 2: POST credentials
+      const body = new URLSearchParams();
+      body.append("csrfToken", csrfToken);
+      body.append("email", email);
+      body.append("password", password);
+      body.append("callbackUrl", window.location.origin + "/");
+      body.append("json", "true");
+
+      const callbackRes = await fetch("/api/auth/callback/credentials", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded", "X-Auth-Return-Redirect": "1" },
+        body: body.toString(),
       });
 
-      if (result?.error) {
-        setError(result.error);
-        setLoading(false);
-      } else if (result?.url) {
+      const result = await callbackRes.json();
+
+      if (result.url) {
         window.location.href = result.url;
+      } else {
+        setError(result.error || "Sign in failed");
+        setLoading(false);
       }
     } catch (err: any) {
-      setError(err?.message || "An unexpected error occurred");
+      setError(err?.message || "Network error");
       setLoading(false);
     }
-  }
+  }, []);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">

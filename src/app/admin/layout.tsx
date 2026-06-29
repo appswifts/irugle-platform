@@ -14,19 +14,23 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   if (!session?.user) redirect("/auth/signin");
   if (session.user.role !== "ADMIN") redirect("/");
 
+  const initials = session.user.name
+    ? session.user.name.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2)
+    : session.user.email?.slice(0, 2).toUpperCase() ?? "?";
+
   return (
-    <div className="flex min-h-screen">
-      <aside className="w-64 border-r bg-white shrink-0 hidden lg:block">
-        <div className="p-6 border-b">
+    <div className="flex min-h-screen bg-[#FDFBF7]">
+      <aside className="w-64 h-screen fixed left-0 top-0 bg-white border-r border-outline-variant flex flex-col z-50">
+        <div className="px-6 py-8">
           <Link href="/admin" className="text-xl font-bold text-primary">irugle</Link>
-          <p className="text-xs text-gray-400 mt-0.5">Admin Panel</p>
+          <p className="text-xs text-on-surface-variant opacity-70 mt-0.5">Platform Overview</p>
         </div>
-        <nav className="p-4 space-y-1">
+        <nav className="flex-1 px-4 space-y-1 overflow-y-auto">
           {navItems.map((item) => (
             <Link
               key={item.href}
               href={item.href}
-              className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors"
+              className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-on-surface-variant hover:bg-surface-container rounded-lg transition-colors"
             >
               <svg className="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d={item.icon} />
@@ -35,16 +39,33 @@ export default async function AdminLayout({ children }: { children: React.ReactN
             </Link>
           ))}
         </nav>
-        <div className="absolute bottom-0 p-4 border-t w-64">
-          <Link href="/" className="flex items-center gap-2 text-sm text-gray-400 hover:text-gray-600 transition-colors">
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+        <div className="px-4 py-4 border-t border-outline-variant flex flex-col gap-1">
+          <Link
+            href="/"
+            className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-on-surface-variant hover:bg-surface-container rounded-lg transition-colors"
+          >
+            <svg className="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
             </svg>
             Back to site
           </Link>
         </div>
       </aside>
-      <main className="flex-1 bg-gray-50 min-h-screen">{children}</main>
+
+      <div className="ml-64 flex-1 min-h-screen">
+        <header className="sticky top-0 z-40 bg-white border-b border-outline-variant flex items-center justify-end px-6 h-16 gap-6">
+          <div className="flex items-center gap-3">
+            <div className="text-right hidden sm:block">
+              <p className="text-sm font-semibold text-ink-blue leading-none">{session.user.name || "Admin"}</p>
+              <p className="text-[11px] font-medium text-on-surface-variant opacity-60">Master Admin</p>
+            </div>
+            <div className="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center text-sm font-bold">
+              {initials}
+            </div>
+          </div>
+        </header>
+        <main>{children}</main>
+      </div>
     </div>
   );
 }
